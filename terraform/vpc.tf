@@ -17,12 +17,16 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_subnet" "public-subnet" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = "10.0.1.0/24"
-  availability_zone       = "us-east-1a"
+  availability_zone       = data.aws_availability_zones.available.names[0] 
   map_public_ip_on_launch = true
 
   tags = {
     Name = var.subnet-name
   }
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
 }
 
 resource "aws_route_table" "rt" {
